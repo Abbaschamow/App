@@ -1,114 +1,184 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>TeleMine - Telegram Mining App</title>
-  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
-  <style>
-    :root {
-      --primary: #0088cc;
-      --bg: #f9fafb;
-      --text: #333;
-      --card: #fff;
-      --shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-      --success: #4caf50;
-      --danger: #f44336;
-      --warn: #ff9800;
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TeleMine - User Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+<style>
+    body {
+        font-family: 'Poppins', sans-serif;
+        background: #eaf3ff;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        margin: 0;
     }
-    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-    body { background: var(--bg); color: var(--text); line-height: 1.6; }
-    header { background: white; box-shadow: var(--shadow); position: sticky; top: 0; z-index: 100; }
-    nav { display: flex; justify-content: space-between; align-items: center; padding: 15px 25px; }
-    .logo { font-size: 1.5rem; font-weight: bold; color: var(--primary); display: flex; align-items: center; gap: 10px; }
-    .logo i { font-size: 1.8rem; }
-    .nav-links { display: flex; gap: 20px; }
-    .nav-links a { text-decoration: none; color: var(--text); font-weight: 500; }
-    .nav-links a:hover { color: var(--primary); }
-    .auth-btns button { margin-left: 10px; padding: 8px 16px; border-radius: 5px; border: 1px solid var(--primary); cursor: pointer; font-weight: 500; }
-    .btn-primary { background: var(--primary); color: white; }
-    .btn-outline { background: transparent; color: var(--primary); }
-    .btn-primary:hover { background: #0077b3; }
-    .btn-outline:hover { background: var(--primary); color: white; }
-    .hidden { display: none; }
-    .container { max-width: 1100px; margin: 30px auto; padding: 20px; }
-    .page-title { font-size: 1.8rem; margin-bottom: 20px; border-bottom: 2px solid #eee; padding-bottom: 5px; }
-    .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 30px; }
-    .stat-card { background: white; padding: 20px; border-radius: 8px; box-shadow: var(--shadow); text-align: center; }
-    .stat-value { font-size: 1.8rem; font-weight: bold; color: var(--primary); margin: 5px 0; }
-    .mining { text-align: center; background: linear-gradient(135deg, #f1f8ff, #e0f0ff); padding: 30px; border-radius: 8px; margin-bottom: 30px; box-shadow: var(--shadow); }
-    .mine-display { font-size: 3rem; color: var(--primary); margin: 20px 0; }
-    .progress { height: 10px; background: #e0e0e0; border-radius: 5px; overflow: hidden; margin: 10px 0; }
-    .progress-inner { height: 100%; width: 0%; background: var(--primary); transition: width 0.5s; }
-    table { width: 100%; border-collapse: collapse; margin-top: 15px; }
-    th, td { padding: 10px; border-bottom: 1px solid #eee; text-align: left; }
-    th { background: #fafafa; }
-    tr:hover { background: #f9f9f9; }
-    footer { background: white; padding: 20px; text-align: center; border-top: 1px solid #eee; color: #777; margin-top: 40px; }
-    .form-group { margin-bottom: 15px; }
-    .form-group label { display: block; margin-bottom: 5px; }
-    .form-group input { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px; }
-    .btn { padding: 10px 15px; border: none; border-radius: 5px; cursor: pointer; }
-    .btn-success { background: var(--success); color: white; }
-    .btn-danger { background: var(--danger); color: white; }
-    .btn-warn { background: var(--warn); color: white; }
-  </style>
-  <script src='//libtl.com/sdk.js' data-zone='10090284' data-sdk='show_10090284'></script>
+    .card {
+        background: #fff;
+        border-radius: 16px;
+        box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        padding: 25px;
+        text-align: center;
+        width: 90%;
+        max-width: 400px;
+    }
+    h2 {
+        color: #0078ff;
+    }
+    input, button {
+        width: 100%;
+        padding: 12px;
+        margin: 8px 0;
+        border-radius: 10px;
+        border: 1px solid #ddd;
+        font-size: 15px;
+    }
+    button {
+        background: #0078ff;
+        color: white;
+        font-weight: bold;
+        cursor: pointer;
+        border: none;
+    }
+    button:hover {
+        background: #005fd1;
+    }
+    .balance {
+        font-size: 30px;
+        color: #0078ff;
+        margin: 15px 0;
+    }
+</style>
 </head>
 <body>
-  <header>
-    <nav>
-      <div class="logo"><i>⚡</i> TeleMine</div>
-      <div class="nav-links">
-        <a href="#" id="link-dashboard">Dashboard</a>
-        <a href="#" id="link-admin" class="hidden">Admin Panel</a>
-      </div>
-      <div class="auth-btns">
-        <button id="login-btn" class="btn-outline">Login</button>
-        <button id="register-btn" class="btn-primary">Register</button>
-        <button id="logout-btn" class="btn-outline hidden">Logout</button>
-      </div>
-    </nav>
-  </header>
+<div class="card" id="authCard">
+    <h2>TeleMine Login</h2>
+    <input type="email" id="email" placeholder="Email">
+    <input type="password" id="password" placeholder="Password">
+    <button onclick="login()">Login</button>
+    <button onclick="register()">Register</button>
+</div>
 
-  <div class="container">
-    <!-- User Dashboard -->
-    <div id="user-dashboard">
-      <h2 class="page-title">Mining Dashboard</h2>
-      <div class="stats-grid">
-        <div class="stat-card"><p>Total Balance</p><div class="stat-value" id="balance">0 TLM</div></div>
-        <div class="stat-card"><p>Today Earnings</p><div class="stat-value" id="today">0 TLM</div></div>
-        <div class="stat-card"><p>Referrals</p><div class="stat-value" id="refs">0</div></div>
-        <div class="stat-card"><p>Mining Speed</p><div class="stat-value" id="speed">1 TLM/h</div></div>
-      </div>
+<div class="card" id="userCard" style="display:none;">
+    <h2>Welcome Miner!</h2>
+    <p>Current Balance:</p>
+    <div class="balance" id="balance">0</div>
+    <button onclick="startMining()">Start Mining 💎</button>
+    <button onclick="logout()">Logout</button>
+</div>
 
-      <div class="mining">
-        <h3>Telegram Mining</h3>
-        <p>Click below to start mining</p>
-        <div class="mine-display" id="mine-display">0 TLM</div>
-        <div class="progress"><div class="progress-inner" id="mine-progress"></div></div>
-        <button id="start-btn" class="btn btn-primary">Start Mining</button>
-        <button id="stop-btn" class="btn btn-outline hidden">Stop Mining</button>
-      </div>
+<script>
+    // 🔥 Firebase Config (Replace with your own)
+    const firebaseConfig = {
+        apiKey: "YOUR_FIREBASE_API_KEY",
+        authDomain: "YOUR_FIREBASE_AUTH_DOMAIN",
+        projectId: "YOUR_FIREBASE_PROJECT_ID",
+        storageBucket: "YOUR_FIREBASE_STORAGE_BUCKET",
+        messagingSenderId: "YOUR_FIREBASE_SENDER_ID",
+        appId: "YOUR_FIREBASE_APP_ID"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const db = firebase.firestore();
 
-      <div class="card">
-        <h3>Withdraw</h3>
-        <div class="form-group">
-          <label>Amount (TLM)</label>
-          <input type="number" id="withdraw-amt" min="100" placeholder="Enter amount">
-        </div>
-        <div class="form-group">
-          <label>Wallet Address</label>
-          <input type="text" id="wallet" placeholder="Your crypto wallet address">
-        </div>
-        <button id="withdraw" class="btn btn-primary" style="width:100%;">Withdraw</button>
-      </div>
+    let userDoc;
 
-      <div class="card">
-        <h3>Referral Program</h3>
+    auth.onAuthStateChanged(user => {
+        if (user) {
+            userDoc = db.collection("users").doc(user.uid);
+            showUserPanel();
+        } else {
+            document.getElementById("authCard").style.display = "block";
+            document.getElementById("userCard").style.display = "none";
+        }
+    });
+
+    function login() {
+        const email = emailInput().value;
+        const pass = passwordInput().value;
+        auth.signInWithEmailAndPassword(email, pass)
+            .catch(e => alert(e.message));
+    }
+
+    function register() {
+        const email = emailInput().value;
+        const pass = passwordInput().value;
+        auth.createUserWithEmailAndPassword(email, pass)
+            .then(cred => {
+                return db.collection("users").doc(cred.user.uid).set({
+                    email: email,
+                    balance: 0
+                });
+            })
+            .catch(e => alert(e.message));
+    }
+
+    function logout() {
+        auth.signOut();
+    }
+
+    function emailInput() { return document.getElementById('email'); }
+    function passwordInput() { return document.getElementById('password'); }
+
+    function showUserPanel() {
+        document.getElementById("authCard").style.display = "none";
+        document.getElementById("userCard").style.display = "block";
+        updateBalance();
+    }
+
+    function updateBalance() {
+        const uid = auth.currentUser.uid;
+        db.collection("users").doc(uid).onSnapshot(doc => {
+            if (doc.exists) {
+                document.getElementById("balance").innerText = doc.data().balance;
+            }
+        });
+    }
+
+    function startMining() {
+        const uid = auth.currentUser.uid;
+        const increment = Math.floor(Math.random() * 5) + 1; // +1 to +5 coins
+        const userRef = db.collection("users").doc(uid);
+
+        userRef.update({
+            balance: firebase.firestore.FieldValue.increment(increment)
+        }).then(() => {
+            alert(`You mined ${increment} 💎`);
+        });
+    }
+</script>
+</body>
+</html>    }
+
+    function updateBalance() {
+        const uid = auth.currentUser.uid;
+        db.collection("users").doc(uid).onSnapshot(doc => {
+            if (doc.exists) {
+                document.getElementById("balance").innerText = doc.data().balance;
+            }
+        });
+    }
+
+    function startMining() {
+        const uid = auth.currentUser.uid;
+        const increment = Math.floor(Math.random() * 5) + 1; // +1 to +5 coins
+        const userRef = db.collection("users").doc(uid);
+
+        userRef.update({
+            balance: firebase.firestore.FieldValue.increment(increment)
+        }).then(() => {
+            alert(`You mined ${increment} 💎`);
+        });
+    }
+</script>
+</body>
+</html>        <h3>Referral Program</h3>
         <p>Invite friends & earn 10% of their rewards!</p>
         <input type="text" id="ref-link" readonly class="form-control" style="width:100%;">
         <button id="copy-ref" class="btn btn-outline" style="margin-top:10px;">Copy Link</button>
